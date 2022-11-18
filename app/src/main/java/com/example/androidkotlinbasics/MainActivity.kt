@@ -49,18 +49,32 @@ class MainActivity : AppCompatActivity() {
         name = userName.text.toString()
         message = userMessage.text.toString()
         isChecked = remember.isChecked
-
         val editor = sharedPreferences.edit()
-
         editor.putString("key name", name)
         editor.putString("key message", message)
         editor.putInt("key count", count)
         editor.putBoolean("key remember", isChecked!!)
-
         editor.apply()
-
         Toast.makeText(applicationContext, "Your Data us Saved", Toast.LENGTH_LONG).show()
 
     }
 
+    fun retreiveData() {
+        sharedPreferences = this.getSharedPreferences("saveData", Context.MODE_PRIVATE)
+        name = sharedPreferences.getString("key name", null)
+        message = sharedPreferences.getString("key message", null)
+        count = sharedPreferences.getInt("key count", 0)
+        isChecked = sharedPreferences.getBoolean("key remember", false)
+
+        userName.setText(name)
+        userMessage.setText(message)
+        counter.setText("$count")
+
+        remember.isChecked = isChecked!!
+    }
+
+    override fun onResume() {
+        super.onResume()
+        retreiveData()
+    }
 }
