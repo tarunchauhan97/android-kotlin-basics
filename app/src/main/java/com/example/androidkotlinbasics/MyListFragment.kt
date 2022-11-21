@@ -1,5 +1,6 @@
 package com.example.androidkotlinbasics
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -22,13 +23,21 @@ class MyListFragment : ListFragment() {
         super.onViewCreated(view, savedInstanceState)
         val arrayAdapter = activity?.let {
             ArrayAdapter.createFromResource(
-    //            requireContext(),//or use activity and get ?let with red bulb
+                //            requireContext(),//or use activity and get ?let with red bulb
                 it,
                 R.array.cities,
                 android.R.layout.simple_list_item_1,
             )
         }
         listAdapter = arrayAdapter
+
+        listView.setOnItemClickListener { adapterView, view, position, l ->
+
+            val intent = Intent(activity, SecondActivity::class.java)
+            intent.putExtra("position", position)
+            startActivity(intent)
+
+        }
     }
 
 }
