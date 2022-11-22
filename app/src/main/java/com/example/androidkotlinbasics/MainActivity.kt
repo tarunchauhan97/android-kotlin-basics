@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
+import androidx.fragment.app.FragmentManager
 
 class MainActivity : AppCompatActivity() {
     lateinit var show: Button
@@ -20,8 +21,18 @@ class MainActivity : AppCompatActivity() {
 
         show.setOnClickListener {
 
+            val fragmentManager: FragmentManager = supportFragmentManager
+            val myDialogFragment = MyDialogFragment()
 
+            myDialogFragment.isCancelable = false
+            myDialogFragment.show(fragmentManager, "MyDialogFragment")
         }
 
+    }
+
+    fun getUserData(userName: String, userAge: Int) {
+
+        name.text = "Name: $userName"
+        age.text = "Age: $userAge"
     }
 }
