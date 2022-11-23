@@ -19,14 +19,14 @@ class SecondActivity : AppCompatActivity() {
         tvPhone = findViewById(R.id.textViewPhone)
         val intent = intent
         val name = intent.getStringExtra("namess")
-//        val email = intent.getStringExtra("emailss")
-//        val phone = intent.getLongExtra("phoness", 0)
+        val email = intent.getStringExtra("emailss")
+        val phone = intent.getLongExtra("phoness", 0)
         print("======$name======")
-//        print("======$email======")
-//        print("======$phone======")
+        print("======$email======")
+        print("======$phone======")
         tvName.text = "Hello $name"
-//        tvEmail.text = "Your Email Address is: $email"
-//        tvPhone.text = "Your Phone Number is: $phone"
+        tvEmail.text = "Your Email Address is: $email"
+        tvPhone.text = "Your Phone Number is: $phone"
 
     }
 }
