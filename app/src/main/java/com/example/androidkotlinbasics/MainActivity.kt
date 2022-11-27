@@ -3,6 +3,8 @@ package com.example.androidkotlinbasics
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.core.view.isVisible
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.androidkotlinbasics.databinding.ActivityMainBinding
 import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
@@ -11,6 +13,7 @@ class MainActivity : AppCompatActivity() {
     private val baseURL = "https://jsonplaceholder.typicode.com/"
     lateinit var mainBinding: ActivityMainBinding
     var postsList = ArrayList<Posts>()
+    lateinit var adapter: PostsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         val view = mainBinding.root
         setContentView(view)
 //        setContentView(R.layout.activity_main)
-
+        mainBinding.RecyclerView.layoutManager = LinearLayoutManager(this)
         showPosts()
     }
 
@@ -33,21 +36,16 @@ class MainActivity : AppCompatActivity() {
 
         call.enqueue(object : Callback<List<Posts>> {
             override fun onResponse(call: Call<List<Posts>>, response: Response<List<Posts>>) {
-                if (!response.isSuccessful) {
-                    mainBinding.textViewUserId.text = "error"
-                    mainBinding.textViewId.text = "error"
-                    mainBinding.textViewTitle.text = "error"
-                    mainBinding.textViewBody.text = "error"
+
+                if (response.isSuccessful) {
+                    mainBinding.progressBar2.isVisible = false
+                    mainBinding.RecyclerView.isVisible = true
+
+                    postsList = response.body() as ArrayList<Posts>
+                    adapter = PostsAdapter(postsList)
+                    mainBinding.RecyclerView.adapter = adapter
 
                 }
-
-                postsList = response.body() as ArrayList<Posts>
-                mainBinding.textViewUserId.text = postsList[0].userId.toString()
-                mainBinding.textViewId.text = postsList[0].Id.toString()
-                mainBinding.textViewTitle.text = postsList[0].title
-                mainBinding.textViewBody.text = postsList[0].subtitle
-
-
             }
 
             override fun onFailure(call: Call<List<Posts>>, t: Throwable) {
@@ -59,3 +57,17 @@ class MainActivity : AppCompatActivity() {
 
     }
 }
+//                if (!response.isSuccessful) {
+//                    mainBinding.textViewUserId.text = "error"
+//                    mainBinding.textViewId.text = "error"
+//                    mainBinding.textViewTitle.text = "error"
+//                    mainBinding.textViewBody.text = "error"
+//
+//                }
+//
+//                postsList = response.body() as ArrayList<Posts>
+//                mainBinding.textViewUserId.text = postsList[0].userId.toString()
+//                mainBinding.textViewId.text = postsList[0].Id.toString()
+//                mainBinding.textViewTitle.text = postsList[0].title
+//                mainBinding.textViewBody.text = postsList[0].subtitle
+//
